@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Knee Prehab & Golf Fitness Tracker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+    <!-- Navbar / Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="bg-emerald-500 p-2 rounded-lg text-slate-950 font-bold shadow-inner">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight">Knee Bulletproofing Dashboard</h1>
+            <p class="text-xs text-slate-400">Tailored Plan for 6'2" Frame & 222 lbs Weight</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 bg-slate-800 px-4 py-2 rounded-xl border border-slate-700 text-xs">
+          <div>
+            <span class="text-slate-400 block">Weekly Routine</span>
+            <span class="font-semibold text-emerald-400">3 Days Gym + 2 Days Golf</span>
+          </div>
+          <div class="border-l border-slate-700 h-8 pl-4">
+            <span class="text-slate-400 block">Primary Focus</span>
+            <span class="font-semibold text-sky-400">Joint Armor & Low-Impact Cardio</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column: Weekly Schedule Quick-View & Custom Calorie Estimator -->
+      <div class="space-y-6 lg:col-span-1">
+        <!-- Weekly Visual Roadmap -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-slate-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Weekly Roadmap
+            </h2>
+          </div>
+
+          <!-- Dynamic Selector for Golf Schedule Variant -->
+          <div class="mb-4 bg-slate-100 p-2.5 rounded-xl border border-slate-200">
+            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1"
+              >Set Second Golf Day:</label
+            >
+            <select
+              id="golf-day-select"
+              onchange="updateScheduleLayout()"
+              class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 focus:outline-none focus:border-emerald-500 cursor-pointer"
+            >
+              <option value="thursday">Monday & Thursday Golf Schedule</option>
+              <option value="friday" selected>Monday & Friday Golf Schedule</option>
+            </select>
+          </div>
+
+          <div id="roadmap-timeline" class="relative pl-4 border-l-2 border-slate-100 space-y-4">
+            <!-- Dynamic Content populated via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Calorie Burn Estimator (Tailored to 222 lbs / ~100.7 kg) -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <h2 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-emerald-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            Knee-Safe Calorie Estimator
+          </h2>
+          <p class="text-xs text-slate-500 mb-4">
+            Calculates energy output custom-tuned for a 222 lbs profile moving at a moderate rehabilitation pace.
+          </p>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Recumbent Stationary Bike (Minutes)</label>
+              <div class="flex gap-2">
+                <input
+                  id="bike-time"
+                  type="number"
+                  value="20"
+                  min="0"
+                  max="180"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 font-medium focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Rowing Machine (Minutes)</label>
+              <div class="flex gap-2">
+                <input
+                  id="row-time"
+                  type="number"
+                  value="15"
+                  min="0"
+                  max="180"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800 font-medium focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+            <button
+              onclick="calculateCalories()"
+              class="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 text-sm font-semibold transition shadow-sm mt-2"
+            >
+              Calculate Session Burn
+            </button>
+
+            <!-- Results Display -->
+            <div id="calorie-result-box" class="hidden mt-3 p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-medium text-emerald-800">Estimated Energy Burn:</span>
+                <span id="total-calories" class="text-xl font-bold text-emerald-600">0 kcal</span>
+              </div>
+              <p class="text-[10px] text-emerald-700/80 mt-1 leading-normal">
+                Based on adjusted Metabolic Equivalents (METs) for a 100.7 kg user: Bike ~5.0 METs, Rower ~7.0 METs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Session Planners and Exercise Guidelines -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Navigation Tabs for the Workout Days -->
+        <div class="bg-slate-200/70 p-1 rounded-xl flex gap-1 overflow-x-auto custom-scrollbar">
+          <button
+            onclick="switchTab('day1')"
+            id="tab-day1"
+            class="tab-btn flex-1 min-w-[100px] text-center py-2 px-3 text-xs font-semibold rounded-lg transition duration-200 bg-white text-slate-900 shadow-sm"
+          >
+            Day 1: Strength
+          </button>
+          <button
+            onclick="switchTab('day2')"
+            id="tab-day2"
+            class="tab-btn flex-1 min-w-[100px] text-center py-2 px-3 text-xs font-medium rounded-lg transition duration-200 text-slate-600 hover:text-slate-900"
+          >
+            Day 2: Cardio
+          </button>
+          <button
+            onclick="switchTab('day3')"
+            id="tab-day3"
+            class="tab-btn flex-1 min-w-[100px] text-center py-2 px-3 text-xs font-medium rounded-lg transition duration-200 text-slate-600 hover:text-slate-900"
+          >
+            Day 3: Balance
+          </button>
+          <button
+            onclick="switchTab('warmup')"
+            id="tab-warmup"
+            class="tab-btn flex-1 min-w-[100px] text-center py-2 px-3 text-xs font-medium rounded-lg transition duration-200 text-slate-600 hover:text-slate-900"
+          >
+            ⛳ Golf Warm-Up
+          </button>
+        </div>
+
+        <!-- TAB 1 CONTENT: DAY 1 LOWER BODY STRENGTH -->
+        <div id="content-day1" class="tab-content block space-y-4">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Day 1: Lower Body Strength & Tracking</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Build muscular shock absorbers to shield the joints when carrying your golf bag.
+                </p>
+              </div>
+              <span
+                id="day1-tag"
+                class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
+                >Tuesday Option</span
+              >
+            </div>
+
+            <!-- Day 1 Progress -->
+            <div class="mb-6 bg-slate-50 border border-slate-100 p-3 rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600">Completion Tracker:</span>
+              <div class="w-1/2 bg-slate-200 rounded-full h-2 mx-3 relative overflow-hidden">
+                <div id="progress-bar-day1" class="bg-emerald-500 h-2 w-0 transition-all duration-300"></div>
+              </div>
+              <span id="progress-text-day1" class="text-xs font-bold text-slate-700">0/4</span>
+            </div>
+
+            <!-- Exercises Checklist -->
+            <div class="space-y-4">
+              <!-- Warmup -->
+              <div
+                class="border border-slate-100 rounded-xl p-4 hover:border-slate-200 transition bg-slate-50/50 flex items-start gap-4"
+              >
+                <input
+                  type="checkbox"
+                  id="d1-ex1"
+                  onclick="updateProgress('day1', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <label for="d1-ex1" class="font-bold text-sm text-slate-800 cursor-pointer"
+                      >Recumbent Bike Warm-Up</label
+                    >
+                    <span class="text-xs font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">10 Mins</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Set to a low resistance with a smooth, spinning cadence. Serves to pump synovial fluid ("joint
+                    lubricant") through your knee structures prior to weighting.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Exercise 1 -->
+              <div
+                class="border border-slate-100 rounded-xl p-4 hover:border-slate-200 transition bg-slate-50/50 flex items-start gap-4"
+              >
+                <input
+                  type="checkbox"
+                  id="d1-ex2"
+                  onclick="updateProgress('day1', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <label for="d1-ex2" class="font-bold text-sm text-slate-800 cursor-pointer">Goblet Wall Sits</label>
+                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded"
+                      >3 Sets x 30s</span
+                    >
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Lean flat back against the wall holding a light weight (10–15 lbs) close to chest. Lower down to a
+                    shallow 45° to 60° knee bend. <strong class="text-amber-600">Form Note:</strong> Avoid dropping to a
+                    full 90° angle if it causes joint pinch or grinding.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Exercise 2 -->
+              <div
+                class="border border-slate-100 rounded-xl p-4 hover:border-slate-200 transition bg-slate-50/50 flex items-start gap-4"
+              >
+                <input
+                  type="checkbox"
+                  id="d1-ex3"
+                  onclick="updateProgress('day1', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <label for="d1-ex3" class="font-bold text-sm text-slate-800 cursor-pointer">Low-Box Step-Ups</label>
+                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded"
+                      >3 Sets x 10/leg</span
+                    >
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Utilize your flat gym bench or a 6-inch step. Stand holding light dumbbells. Step up deliberately,
+                    ensuring your tracking knee stays directly centered over your toes.
+                    <strong class="text-rose-600">Crucial Constraint:</strong> Do not let the knee cave inward at any
+                    point during descent.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Exercise 3 -->
+              <div
+                class="border border-slate-100 rounded-xl p-4 hover:border-slate-200 transition bg-slate-50/50 flex items-start gap-4"
+              >
+                <input
+                  type="checkbox"
+                  id="d1-ex4"
+                  onclick="updateProgress('day1', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <label for="d1-ex4" class="font-bold text-sm text-slate-800 cursor-pointer"
+                      >Banded Clamshells</label
+                    >
+                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded"
+                      >3 Sets x 15/side</span
+                    >
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Loop a resistance band immediately above the knees. Lie on your side and elevate your top knee
+                    against the tension. Targets the outer glutes to mitigate inward rotational instability on rolling
+                    golf terrain.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2 CONTENT: DAY 2 PURE LOW-IMPACT CARDIO -->
+        <div id="content-day2" class="tab-content hidden space-y-4">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Day 2: Pure Low-Impact Fat Burn & Flushing</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Flush metabolites and stimulate aerobic conditioning without standard joint strain.
+                </p>
+              </div>
+              <span
+                id="day2-tag"
+                class="bg-sky-100 text-sky-800 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
+                >Thursday Option</span
+              >
+            </div>
+
+            <!-- Day 2 Progress -->
+            <div class="mb-6 bg-slate-50 border border-slate-100 p-3 rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600">Completion Tracker:</span>
+              <div class="w-1/2 bg-slate-200 rounded-full h-2 mx-3 relative overflow-hidden">
+                <div id="progress-bar-day2" class="bg-sky-500 h-2 w-0 transition-all duration-300"></div>
+              </div>
+              <span id="progress-text-day2" class="text-xs font-bold text-slate-700">0/2</span>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Machine 1 -->
+              <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50 flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  id="d2-ex1"
+                  onclick="updateProgress('day2', 2)"
+                  class="w-5 h-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-sm text-slate-800">Recumbent Bike Segment</span>
+                    </div>
+                    <span class="text-xs font-semibold text-sky-600 bg-sky-50 px-2 py-0.5 rounded">20 Mins</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Maintain a stable, continuous cadence at a moderate baseline resistance setting. Because your body
+                    weight is completely offloaded by the horizontal seat, this maximizes aerobic metabolic flow without
+                    compressing damaged joint surfaces.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Machine 2 -->
+              <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50 flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  id="d2-ex2"
+                  onclick="updateProgress('day2', 2)"
+                  class="w-5 h-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-sm text-slate-800">Modified Rowing Segment</span>
+                    <span class="text-xs font-semibold text-sky-600 bg-sky-50 px-2 py-0.5 rounded">15 Mins</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    <strong class="text-rose-600">Crucial Biomechanical Modification:</strong> Intentionally restrict
+                    the forward slide at the 'catch' phase. Stop moving forward the exact moment your shins hit vertical
+                    alignment. Drive exclusively through your heels to protect the anterior knee from deep compression
+                    pinching.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3 CONTENT: DAY 3 CORE, BALANCE & STABILITY -->
+        <div id="content-day3" class="tab-content hidden space-y-4">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">Day 3: Core, Balance & Endurance</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Secure structural symmetry and trunk rotation stability around your active rounds.
+                </p>
+              </div>
+              <span
+                id="day3-tag"
+                class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider"
+                >Saturday Option</span
+              >
+            </div>
+
+            <!-- Day 3 Progress -->
+            <div class="mb-6 bg-slate-50 border border-slate-100 p-3 rounded-xl flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-600">Completion Tracker:</span>
+              <div class="w-1/2 bg-slate-200 rounded-full h-2 mx-3 relative overflow-hidden">
+                <div id="progress-bar-day3" class="bg-indigo-500 h-2 w-0 transition-all duration-300"></div>
+              </div>
+              <span id="progress-text-day3" class="text-xs font-bold text-slate-700">0/4</span>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Warmup -->
+              <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50 flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  id="d3-ex1"
+                  onclick="updateProgress('day3', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-sm text-slate-800">Recumbent Bike Flush</span>
+                    <span class="text-xs font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">5 Mins</span>
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1">Gentle multi-directional movement to prep muscle tissues.</p>
+                </div>
+              </div>
+
+              <!-- Exercise 1 -->
+              <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50 flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  id="d3-ex2"
+                  onclick="updateProgress('day3', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-sm text-slate-800">Desk-Side Straight Leg Raises</span>
+                    <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded"
+                      >3 Sets x 12/leg</span
+                    >
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Sit upright on your bench. Fully extend your affected leg parallel to the ground and lock out the
+                    knee, squeezing the quadriceps intensely for 5 full seconds. Loop a light band around your ankles
+                    for progressive loading.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Exercise 2 -->
+              <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50 flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  id="d3-ex3"
+                  onclick="updateProgress('day3', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-sm text-slate-800">Weighted Glute Bridges</span>
+                    <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded"
+                      >3 Sets x 12 Reps</span
+                    >
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Lie flat on your back with knees bent, feet firmly planted. Position a comfortable dumbbell weight
+                    across your pelvic crest. Drive down through your heels to raise your hips. Offloads severe
+                    mechanical work from the lower quad tendons by optimizing posterior chain support.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Exercise 3 -->
+              <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50 flex items-start gap-4">
+                <input
+                  type="checkbox"
+                  id="d3-ex4"
+                  onclick="updateProgress('day3', 4)"
+                  class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 mt-1 cursor-pointer"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-sm text-slate-800">Bird-Dogs</span>
+                    <span class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded"
+                      >3 Sets x 10/side</span
+                    >
+                  </div>
+                  <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                    Adopt a quadruped stance on all fours. Uniformly extend your opposite arm and leg perfectly
+                    straight. Stabilizes cross-body patterns to protect your lower back from the asymmetrical rotational
+                    loading forces inherent in a golf swing.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4 CONTENT: PARKING LOT PRE-ROUND WARMUP -->
+        <div id="content-warmup" class="tab-content hidden space-y-4">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <div class="flex justify-between items-start flex-wrap gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-bold text-slate-900">⛳ Pre-Round Parking Lot Preparation</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Execute this non-weight-bearing sequence immediately before teeing off to secure early stabilization.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-100 flex gap-3">
+                <span class="text-base">1️⃣</span>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Supported Standing Leg Swings</h4>
+                  <p class="text-xs text-slate-600 mt-0.5">
+                    Hold onto your car door or golf cart. Gently swing your leg forward and backward 15 times to wake up
+                    the hamstrings and hip flexors without high-impact compression.
+                  </p>
+                </div>
+              </div>
+
+              <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-100 flex gap-3">
+                <span class="text-base">2️⃣</span>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Mini-Band Lateral Walks (Optional Activation)</h4>
+                  <p class="text-xs text-slate-600 mt-0.5">
+                    If you keep a light exercise loop in your golf bag, slide it above your ankles and perform 10
+                    micro-steps to each side. This locks in glute medius tracking so your knee won't alter your gait on
+                    early holes.
+                  </p>
+                </div>
+              </div>
+
+              <div class="p-3 bg-amber-50/60 rounded-xl border border-amber-100 flex gap-3">
+                <span class="text-base">3️⃣</span>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Club-Assisted Torso Twists</h4>
+                  <p class="text-xs text-slate-600 mt-0.5">
+                    Place a long iron across your shoulders behind your neck. Stand with your feet shoulder-width apart,
+                    and smoothly rotate your torso left to right. Focus on keeping your hips stable to prevent premature
+                    twisting force inside the knee joints.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Custom Footer Notification Setup -->
+    <div
+      id="toast"
+      class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-2 text-xs"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 text-emerald-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <span id="toast-message">Progress saved successfully!</span>
+    </div>
+
+    <!-- Interface Logic -->
+    <script>
+      // Dynamic Timeline Switcher based on User's walking golf schedule choices
+      function updateScheduleLayout() {
+        const secondGolfDay = document.getElementById('golf-day-select').value;
+        const container = document.getElementById('roadmap-timeline');
+
+        if (secondGolfDay === 'thursday') {
+          container.innerHTML = `
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-amber-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Monday</span>
+                        <span class="text-sm font-bold text-amber-600 flex items-center gap-1">⛳ Golf Day (Walking Round)</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-emerald-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Tuesday</span>
+                        <span class="text-sm font-semibold text-slate-800">Day 1: Strength & Prehab Focus</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-sky-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Wednesday</span>
+                        <span class="text-sm font-semibold text-slate-800">Day 2: Low-Impact Cardio & Flush</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-amber-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Thursday</span>
+                        <span class="text-sm font-bold text-amber-600 flex items-center gap-1">⛳ Golf Day (Walking Round)</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-indigo-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Friday</span>
+                        <span class="text-sm font-semibold text-slate-800">Day 3: Balance, Core & Stability</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-slate-300 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Saturday</span>
+                        <span class="text-sm text-slate-600">Rest / Active Dog Walk (Flat)</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-slate-300 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Sunday</span>
+                        <span class="text-sm text-slate-600">Full Structural Recovery</span>
+                    </div>
+                `;
+          document.getElementById('day1-tag').innerText = 'Tuesday Option';
+          document.getElementById('day2-tag').innerText = 'Wednesday Option';
+          document.getElementById('day3-tag').innerText = 'Friday Option';
+        } else {
+          // Friday Selection
+          container.innerHTML = `
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-amber-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Monday</span>
+                        <span class="text-sm font-bold text-amber-600 flex items-center gap-1">⛳ Golf Day (Walking Round)</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-emerald-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Tuesday</span>
+                        <span class="text-sm font-semibold text-slate-800">Day 1: Strength & Prehab Focus</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-slate-300 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Wednesday</span>
+                        <span class="text-sm text-slate-600">Rest / Mid-week Structural Reset</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-sky-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Thursday</span>
+                        <span class="text-sm font-semibold text-slate-800">Day 2: Low-Impact Cardio & Flush</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-amber-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Friday</span>
+                        <span class="text-sm font-bold text-amber-600 flex items-center gap-1">⛳ Golf Day (Walking Round)</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-indigo-500 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Saturday</span>
+                        <span class="text-sm font-semibold text-slate-800">Day 3: Balance, Core & Stability</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -left-[21px] top-1 bg-slate-300 h-2 w-2 rounded-full ring-4 ring-white"></div>
+                        <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Sunday</span>
+                        <span class="text-sm text-slate-600">Full Structural Recovery</span>
+                    </div>
+                `;
+          document.getElementById('day1-tag').innerText = 'Tuesday Option';
+          document.getElementById('day2-tag').innerText = 'Thursday Option';
+          document.getElementById('day3-tag').innerText = 'Saturday Option';
+        }
+      }
+
+      // Calorie calculation formulas tailored to 222 lbs (100.7 kg)
+      // Bike ~5 METs, Rower ~7 METs
+      function calculateCalories() {
+        const bikeMinutes = parseFloat(document.getElementById('bike-time').value) || 0;
+        const rowMinutes = parseFloat(document.getElementById('row-time').value) || 0;
+        const userWeightKg = 100.7;
+
+        // Calories = METs * 3.5 * weight_kg / 200 * minutes
+        const bikeBurn = ((5.0 * 3.5 * userWeightKg) / 200) * bikeMinutes;
+        const rowBurn = ((7.0 * 3.5 * userWeightKg) / 200) * rowMinutes;
+        const totalBurn = Math.round(bikeBurn + rowBurn);
+
+        document.getElementById('total-calories').innerText = totalBurn + ' kcal';
+
+        const resultBox = document.getElementById('calorie-result-box');
+        resultBox.classList.remove('hidden');
+      }
+
+      // Tab Navigation Mechanics
+      function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach((content) => {
+          content.classList.add('hidden');
+          content.classList.remove('block');
+        });
+        document.getElementById('content-' + tabId).classList.remove('hidden');
+        document.getElementById('content-' + tabId).classList.add('block');
+
+        document.querySelectorAll('.tab-btn').forEach((btn) => {
+          btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-semibold');
+          btn.classList.add('text-slate-600', 'font-medium');
+        });
+        const activeBtn = document.getElementById('tab-' + tabId);
+        activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-semibold');
+        activeBtn.classList.remove('text-slate-600', 'font-medium');
+      }
+
+      // Dynamic Interactive Checklist Progress Bars
+      function updateProgress(dayKey, totalCount) {
+        let checkedCount = 0;
+        for (let i = 1; i <= totalCount; i++) {
+          const element = document.getElementById('d' + dayKey.replace('day', '') + '-ex' + i);
+          if (element && element.checked) {
+            checkedCount++;
+          }
+        }
+
+        const percentage = (checkedCount / totalCount) * 100;
+        document.getElementById('progress-bar-' + dayKey).style.width = percentage + '%';
+        document.getElementById('progress-text-' + dayKey).innerText = checkedCount + '/' + totalCount;
+
+        if (checkedCount === totalCount) {
+          showToast('🔥 Outstanding work! Session completed successfully.');
+        }
+      }
+
+      // Toast Feedback System
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-message').innerText = msg;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+
+        setTimeout(() => {
+          toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3500);
+      }
+
+      // Initialize view on load
+      window.onload = function () {
+        updateScheduleLayout();
+      };
+    </script>
+  </body>
+</html>
